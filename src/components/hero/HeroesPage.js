@@ -1,4 +1,7 @@
 import React, { PropTypes } from "react";
+import {connect} from "react-redux";
+import * as heroActions from "../../actions/heroActions";
+import {bindActionCreators} from  "redux";
 
 class HeroesPage extends React.Component {
 
@@ -21,13 +24,18 @@ class HeroesPage extends React.Component {
     }
 
     onClickSave(event) {
-        alert(`saving ${ this.state.hero.name }`);
+        this.props.actions.createHero(this.state.hero);
+    }
+
+    heroRow(hero, index){
+        return <div key={index}>{hero.name}</div>;
     }
 
     render() {
         return (
             <div>
                 <h1>HEROES</h1>
+                {this.props.heroes.map(this.heroRow)}
                 <h2>Add Hero</h2>
                 <input
                     type="text"
@@ -43,6 +51,22 @@ class HeroesPage extends React.Component {
     }
 }
 
+function mapStateToProps(state, ownProps){
+    return {
+        heroes: state.heroes
+    };
+}
 
-export default HeroesPage;
+function mapDispatchToProps(dispatch){
+    return { 
+        actions: bindActionCreators(heroActions, dispatch)
+    };
+}
+
+HeroesPage.propTypes = {
+    heroes: PropTypes.array.isRequired, 
+    actions: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeroesPage);
 
