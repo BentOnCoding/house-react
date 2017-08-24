@@ -6,18 +6,19 @@ import delay from './delay';
 const heroes = [
   {
     id: "superman",
+    secretIdentity: "Clark Kent",
     name: "Superman",
     heroId: "superman",
     nemesisId: 'doomfist',
     age: "unknown"
   },
   {
-    id: "clean-code",
-    title: "Clean Code: Writing Code for Humans",
-    watchHref: "http://www.pluralsight.com/courses/writing-clean-code-humans",
-    authorId: "cory-house",
-    length: "3:10",
-    category: "Software Practices"
+    id: "batman",
+    secretIdentity: "Bruce Wayne",
+    name: "Batman",
+    heroId: "batman",
+    nemesisId: "lex-luthor",
+    age: 43
   }
  
 ];
@@ -45,20 +46,19 @@ class HeroApi {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         // Simulate server-side validation
-        const minCourseTitleLength = 1;
-        if (hero.title.length < minCourseTitleLength) {
-          reject(`Title must be at least ${minCourseTitleLength} characters.`);
+        const minHeroTitleLength = 1;
+        if (hero.title.length < minHeroTitleLength) {
+          reject(`Title must be at least ${minHeroTitleLength} characters.`);
         }
 
         if (hero.id) {
-          const existingCourseIndex = heroes.findIndex(a => a.id == hero.id);
-          heroes.splice(existingCourseIndex, 1, hero);
+          const existingHeroIndex = heroes.findIndex(a => a.id == hero.id);
+          heroes.splice(existingHeroIndex, 1, hero);
         } else {
           //Just simulating creation here.
           //The server would generate ids and watchHref's for new courses in a real app.
           //Cloning so copy returned is passed by value rather than by reference.
           hero.id = generateId(hero);
-          hero.watchHref = `http://www.pluralsight.com/courses/${hero.id}`;
           heroes.push(hero);
         }
 
@@ -70,10 +70,10 @@ class HeroApi {
   static deleteHero(heroId) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const indexOfCourseToDelete = heroes.findIndex(course => {
-          course.id == heroId;
+        const indexOfHeroToDelete = heroes.findIndex(hero => {
+          hero.id == heroId;
         });
-        heroes.splice(indexOfCourseToDelete, 1);
+        heroes.splice(indexOfHeroToDelete, 1);
         resolve();
       }, delay);
     });

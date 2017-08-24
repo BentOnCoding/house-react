@@ -1,7 +1,8 @@
 import React, { PropTypes } from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import * as heroActions from "../../actions/heroActions";
-import {bindActionCreators} from  "redux";
+import { bindActionCreators } from "redux";
+import HeroList from "./HeroList";
 
 class HeroesPage extends React.Component {
 
@@ -12,59 +13,48 @@ class HeroesPage extends React.Component {
         this.state = {
             hero: { name: "" }
         };
-
-        this.onNameChange = this.onNameChange.bind(this);
-        this.onClickSave = this.onClickSave.bind(this);
     }
 
-    onNameChange(event) {
-        const hero = this.state.hero;
-        hero.name = event.target.value;
-        this.setState({ hero: hero });
-    }
+    heroRow(hero, index) {
+        return (
+            <div>
+                <div key={index}>
+                    {hero.name}
+                </div>
+                <div>
+                    {hero.secretIdentity}
+                </div>
+            </div>
+        );
 
-    onClickSave(event) {
-        this.props.actions.createHero(this.state.hero);
-    }
-
-    heroRow(hero, index){
-        return <div key={index}>{hero.name}</div>;
     }
 
     render() {
+        const {heroes} = this.props;
+
         return (
             <div>
                 <h1>HEROES</h1>
-                {this.props.heroes.map(this.heroRow)}
-                <h2>Add Hero</h2>
-                <input
-                    type="text"
-                    onChange={this.onNameChange}
-                    value={this.state.hero.name} />
-
-                <input 
-                    type="submit"
-                    value="Save"
-                    onClick={this.onClickSave} />
+                <HeroList heroes={heroes} />
             </div>
         );
     }
 }
 
-function mapStateToProps(state, ownProps){
+function mapStateToProps(state, ownProps) {
     return {
         heroes: state.heroes
     };
 }
 
-function mapDispatchToProps(dispatch){
-    return { 
+function mapDispatchToProps(dispatch) {
+    return {
         actions: bindActionCreators(heroActions, dispatch)
     };
 }
 
 HeroesPage.propTypes = {
-    heroes: PropTypes.array.isRequired, 
+    heroes: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired
 };
 

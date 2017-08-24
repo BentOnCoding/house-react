@@ -1,1 +1,1 @@
-export const CREATE_HERO = "CREATE_HERO";
+export const LOAD_HEROES_SUCCESS = "LOAD_HEROES_SUCCESS";
